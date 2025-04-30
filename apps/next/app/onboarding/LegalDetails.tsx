@@ -11,13 +11,13 @@ import Input from "@/components/Input";
 import OnboardingLayout from "@/components/layouts/Onboarding";
 import { linkClasses } from "@/components/Link";
 import MutationButton from "@/components/MutationButton";
-import RadioButtons from "@/components/RadioButtons";
 import Select from "@/components/Select";
 import { e } from "@/utils";
 import { getTinName } from "@/utils/legal";
 import { request } from "@/utils/request";
 import { legal_onboarding_path, save_legal_onboarding_path } from "@/utils/routes";
 import LegalCertificationModal from "./LegalCertificationModal";
+import { RadioGroup } from "@/components/ui/radio-group";
 
 const LegalDetails = <T extends string>({
   header,
@@ -127,14 +127,16 @@ const LegalDetails = <T extends string>({
   return (
     <OnboardingLayout stepIndex={steps.indexOf("Billing info")} steps={steps} title={header} subtitle={subheading}>
       <form className="grid gap-4" onSubmit={e(() => submit.mutate(""), "prevent")}>
-        <RadioButtons
-          value={isBusinessEntity.toString()}
-          onChange={(value) => setIsBusinessEntity(value === "true")}
-          label="Legal entity"
+
+
+        <RadioGroup
           options={[
             { label: "I'm an individual", value: "false" },
             { label: "I'm a business", value: "true" },
           ]}
+          value={isBusinessEntity.toString()}
+          onChange={(value) => setIsBusinessEntity(value === "true")}
+          label="Legal entity"
         />
 
         {isBusinessEntity ? (

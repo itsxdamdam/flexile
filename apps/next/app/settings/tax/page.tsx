@@ -12,7 +12,6 @@ import { z } from "zod";
 import LegalCertificationModal from "@/app/onboarding/LegalCertificationModal";
 import FormSection from "@/components/FormSection";
 import Input from "@/components/Input";
-import RadioButtons from "@/components/RadioButtons";
 import Select from "@/components/Select";
 import Status from "@/components/Status";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -27,6 +26,7 @@ import { request } from "@/utils/request";
 import { settings_tax_path } from "@/utils/routes";
 import { useOnChange } from "@/utils/useOnChange";
 import SettingsLayout from "../Layout";
+import { RadioGroup } from "@/components/ui/radio-group";
 
 const dataSchema = z.object({
   birth_date: z.string().nullable(),
@@ -230,7 +230,7 @@ export default function TaxPage() {
             label="Country of citizenship"
           />
 
-          <RadioButtons
+          <RadioGroup
             value={formData.business_entity ? "business" : "individual"}
             onChange={(value) => setFormData({ ...formData, business_entity: value === "business" })}
             label="Type of entity"

@@ -8,7 +8,6 @@ import Input from "@/components/Input";
 import Modal from "@/components/Modal";
 import MutationButton from "@/components/MutationButton";
 import NumberInput from "@/components/NumberInput";
-import RadioButtons from "@/components/RadioButtons";
 import { Editor as RichTextEditor } from "@/components/RichText";
 import Select from "@/components/Select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/Tooltip";
@@ -24,6 +23,7 @@ import type { RouterOutput } from "@/trpc";
 import { trpc } from "@/trpc/client";
 import { formatMoneyFromCents } from "@/utils/formatMoney";
 import { pluralize } from "@/utils/pluralize";
+import { RadioGroup } from "@/components/ui/radio-group";
 
 type Role = RouterOutput["roles"]["list"][number];
 
@@ -157,7 +157,9 @@ const ManageModal = ({
           label="Name"
           invalid={errors.includes("name")}
         />
-        <RadioButtons
+
+
+        <RadioGroup
           value={role.payRateType}
           onChange={(payRateType) => updateRole({ payRateType })}
           label="Type"
@@ -168,6 +170,7 @@ const ManageModal = ({
           ].filter((option) => !!option)}
           disabled={!!role.id}
         />
+
         <div className={`grid gap-3 ${expenseAccounts.length > 0 ? "md:grid-cols-2" : ""}`}>
           <NumberInput
             value={role.payRateInSubunits / 100}

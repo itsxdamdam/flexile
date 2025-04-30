@@ -42,7 +42,7 @@ export const createContext = cache(async ({ req }: FetchCreateContextFnOptions) 
     accept: "application/json",
     ...(csrfToken ? { "x-csrf-token": csrfToken } : {}),
   };
-  const response = await fetch(internal_userid_url({ host }), { headers });
+  const response = await fetch("http://127.0.0.1:3000/internal/userid", { headers });
   const userId = response.ok ? z.object({ id: z.number() }).parse(await response.json()).id : null;
 
   return {
