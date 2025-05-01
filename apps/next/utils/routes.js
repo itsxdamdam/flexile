@@ -84,7 +84,7 @@ const __jsr = (
         },
         NIL: {
             define() {
-                // Defined using const __jsr = 
+                // Defined using const __jsr =
             },
             isSupported() {
                 return true;
@@ -121,7 +121,7 @@ const __jsr = (
         constructor() {
             this.configuration = {
                 prefix: "",
-                default_url_options: {"protocol":"https","host":"localhost:3001"},
+                default_url_options: {"protocol":"https","host":"flexile.dev"},
                 special_options_key: "toString",
                 serializer: null || this.default_serializer.bind(this),
             };

@@ -127,8 +127,6 @@ const LegalDetails = <T extends string>({
   return (
     <OnboardingLayout stepIndex={steps.indexOf("Billing info")} steps={steps} title={header} subtitle={subheading}>
       <form className="grid gap-4" onSubmit={e(() => submit.mutate(""), "prevent")}>
-
-
         <RadioGroup
           options={[
             { label: "I'm an individual", value: "false" },
