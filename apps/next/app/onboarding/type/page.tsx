@@ -27,6 +27,7 @@ export default function SignUp() {
         onChange={setAccessRole}
         label="I'm a..."
       />
+
       <Suspense>
         {accessRole === "administrator" ? <CompanyDetails /> : <PersonalDetails nextLinkTo="/onboarding/legal" />}
       </Suspense>

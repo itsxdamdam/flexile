@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { RadioGroup as BaseRadioGroup, RadioGroupItem } from "@radix-ui/react-radio-group";
+import { RadioGroup as BaseRadioGroup, RadioGroupItem, RadioGroupIndicator } from "@radix-ui/react-radio-group";
 import { cn } from "@/utils/index";
 import { Label } from "@/components/ui/label";
-import { formControlClasses, formHelpClasses } from "@/components/Input";
 
 type Option<T> = {
   label: string;
@@ -20,7 +19,6 @@ type Props<T extends string | number> = {
   invalid?: boolean;
   disabled?: boolean;
   help?: string | undefined;
-  className?: string;
 };
 
 function RadioGroup<T extends string | number>({
@@ -31,13 +29,12 @@ function RadioGroup<T extends string | number>({
   invalid,
   disabled,
   help,
-  className,
 }: Props<T>) {
   const stringValue = String(value);
 
   return (
-    <fieldset className={cn("group", className)}>
-      {label && <legend className="mb-2">{label}</legend>}
+    <fieldset className="group">
+      {label ? <legend className="mb-2 font-medium">{label}</legend> : null}
       <BaseRadioGroup
         value={stringValue}
         onValueChange={(v) => onChange(options.find((o) => String(o.value) === v)!.value)}
@@ -48,37 +45,51 @@ function RadioGroup<T extends string | number>({
         {options.map((option) => {
           const stringOptionValue = String(option.value);
           return (
-            <div key={stringOptionValue} className="flex items-start gap-2">
-              <Label
-                htmlFor={`radio-${stringOptionValue}`}
-                key={option.label}
+            <Label
+              key={stringOptionValue}
+              data-state={value === option.value ? "checked" : "unchecked"}
+              className={cn(
+                "flex cursor-pointer items-center gap-3 rounded-md border bg-transparent p-4 shadow-xs transition-all",
+                "hover:bg-accent hover:text-accent-foreground border-input",
+
+                "transition-[color,background-color,box-shadow,border-color] data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-500/10 ",
+                invalid && "border-destructive ring-destructive/20 ring-2",
+                disabled && "pointer-events-none cursor-not-allowed opacity-50",
+              )}
+            >
+              <RadioGroupItem
+                id={`radio-${stringOptionValue}`}
+                value={stringOptionValue}
+                disabled={disabled}
                 className={cn(
-                  "flex cursor-pointer items-center gap-2 p-3",
-                  disabled ? "cursor-not-allowed opacity-50" : "",
-                  invalid ? "text-red-500" : "",
-                  `${formControlClasses}`,
+                  "border-input sr-only size-3 shrink-0 cursor-pointer rounded-full border transition-all outline-none",
+
+                  "data-[state=checked]:border-none data-[state=checked]:ring-1 data-[state=checked]:ring-blue-500",
                 )}
               >
-                <RadioGroupItem
-                  id={`radio-${stringOptionValue}`}
-                  value={stringOptionValue}
-                  disabled={disabled}
-                  className={cn(
-                    "peer border-primary focus-within:ring- size-3 shrink-0 rounded-full border border-gray-300 outline-hidden focus-within:bg-blue-500 focus:border-blue-400 focus-visible:outline-1",
-                    "data-[state=checked]:border-blue-500 data-[state=checked]:bg-blue-500",
-                  )}
-                />
+                <RadioGroupIndicator className="relative flex size-full items-center justify-center after:block after:size-2 after:rounded-full after:bg-blue-500" />
+              </RadioGroupItem>
 
+              {option.description ? (
                 <div>
                   <div className="font-medium">{option.label}</div>
-                  {option.description && <div className="text-muted-foreground text-sm">{option.description}</div>}
+                  <span className="text-muted-foreground text-sm leading-none">{option.description}</span>
                 </div>
-              </Label>
-            </div>
+              ) : (
+                <span className="font-medium">{option.label}</span>
+              )}
+            </Label>
           );
         })}
       </BaseRadioGroup>
-      {help ? <div className={`mt-2 ${formHelpClasses}`}>{help}</div> : null}
+      {help ? (
+        <div
+          id={help ? `radio-help-${label}` : undefined}
+          className={`mt-2 text-sm ${invalid ? "text-destructive" : "text-muted-foreground"}`}
+        >
+          {help}
+        </div>
+      ) : null}
     </fieldset>
   );
 }
